@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+<style>
+	table {
+		background-color: #808080;
+		font-family: Calibri;
+		transition: box-shadow linear 0.2s 0s;
+	}
+	table:hover {
+		box-shadow: 1px 1px 2px magenta, -1px -1px 2px magenta;
+	}
+	table, th, td {
+		border: 1px solid black;
+	}
+	th, td {
+		background-color: #D3D3D3;
+		text-align: center;
+		width: 3rem;
+		height: 2rem;
+	}
+	tr > :last-child {
+		width: 6rem;
+	}
+</style>
+{% endblock %}
+
+{% block body %}
+	<table>
+		<tr>
+			<th>id</th>
+			<td>health</td>
+			<td>birth_date</td>
+			<td>name</td>
+		</tr>
+		{% for megaman in megamen %}
+		<tr>
+			<th>{{ megaman.id }}</th>
+			<td>{{ megaman.health }}</td>
+			<td>{{ megaman.birthDate.format('d/m/Y') }}</td>
+			<td>{{ megaman.name }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+{% endblock %}
