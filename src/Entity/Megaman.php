@@ -73,4 +73,14 @@ class Megaman
 
         return $this;
     }
+
+    public function getAverageHealth(): int {
+        $bodyparts = $this->getBody()->getBodyparts();
+        $sum = $n = 0;
+        foreach ($bodyparts as $part) {
+            $sum += $part->getHealth();
+            $n++;
+        }
+        return (int) ($sum / $n);
+    }
 }

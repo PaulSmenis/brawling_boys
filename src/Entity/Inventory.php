@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Medkit;
 use App\Repository\InventoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,9 +31,14 @@ class Inventory
     private $body;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\OneToMany(targetEntity=InventoryItems::class, mappedBy="inventory", cascade={"persist"})
      */
-    private $items = [];
+    private $items;
+
+    public function __construct()
+    {
+        $this->items = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -68,21 +75,40 @@ class Inventory
         return $this;
     }
 
-    public function putMedkit(Medkit $item): self 
-    {
-        $this->$items[] += $item;
-
-        return $this;
-    }
-
-    public function getItems(): ?array
+    /**
+     * @return Collection|InventoryItems[]
+     */
+    public function getItems(): Collection
     {
         return $this->items;
     }
 
-    public function setItems(array $items): self
+    public function getItem(string $item_type): InventoryItems 
     {
-        $this->items = $items;
+        return $this->getItems()[$item_type];
+    }
+
+    public function addItem(InventoryItems $item): self
+    {
+        if (!$this->items->contains($item)) {
+            $this->items[] = $item;
+            $item->setInventory($this);
+        } else {
+            $this->getItem($item->getItemType())->setQuantity($item->getQuantity() + 1);
+        }
+
+        return $this;
+    }
+
+    public function removeItem(InventoryItems $item): self
+    {
+        if ($this->items->contains($item)) {
+            $this->items->removeElement($item);
+            // set the owning side to null (unless already changed)
+            if ($item->getInventory() === $this) {
+                $item->setInventory(null);
+            }
+        }
 
         return $this;
     }

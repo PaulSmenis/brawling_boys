@@ -22,7 +22,7 @@ class Body
     /**
      * @ORM\OneToMany(targetEntity=Bodypart::class, mappedBy="body", orphanRemoval=true, cascade={"persist"})
      */
-    private $bodypart;
+    private $bodyparts;
 
     /**
      * @ORM\OneToOne(targetEntity=Inventory::class, inversedBy="body", cascade={"persist", "remove"})
@@ -36,7 +36,7 @@ class Body
 
     public function __construct()
     {
-        $this->bodypart = new ArrayCollection();
+        $this->bodyparts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -45,17 +45,17 @@ class Body
     }
 
     /**
-     * @return Collection|bodypart[]
+     * @return Collection|bodyparts[]
      */
-    public function getBodypart(): Collection
+    public function getBodyparts(): Collection
     {
-        return $this->bodypart;
+        return $this->bodyparts;
     }
 
     public function addBodypart(bodypart $bodypart): self
     {
-        if (!$this->bodypart->contains($bodypart)) {
-            $this->bodypart[] = $bodypart;
+        if (!$this->bodyparts->contains($bodypart)) {
+            $this->bodyparts[] = $bodypart;
             $bodypart->setBody($this);
         }
 

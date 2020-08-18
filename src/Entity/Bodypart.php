@@ -23,7 +23,7 @@ class Bodypart
     private $health;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Body::class, inversedBy="bodypart")
+     * @ORM\ManyToOne(targetEntity=Body::class, inversedBy="bodyparts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $body;
