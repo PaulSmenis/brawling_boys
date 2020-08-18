@@ -23,11 +23,6 @@ class InventoryItems
     private $item_type;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $quantity;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Inventory::class, inversedBy="items")
      */
     private $inventory;
@@ -50,18 +45,6 @@ class InventoryItems
     public function setItemType(string $item_type): self
     {
         $this->item_type = $item_type;
-
-        return $this;
-    }
-
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): self
-    {
-        $this->quantity = $quantity;
 
         return $this;
     }

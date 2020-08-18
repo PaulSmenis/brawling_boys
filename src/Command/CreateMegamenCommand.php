@@ -42,13 +42,22 @@ class CreateMegamenCommand extends Command
         $megamen = $this->createMegamen
         ->createRandomMegamen($input->getArgument('amount'));
 
+        $stringified_inventory = function($megaman) {
+            $str = "";
+            foreach ($megaman->getBody()->getInventory()->getItems() as $item) {
+                $str .= $item->getItemType() . ' ';
+            }
+            return $str . "\n";
+        };
+
         foreach ($megamen as $index => $megaman) {
 
             $output->writeln([
                 'New megaman ('. ($index + 1) .') has been created:',
                 'Birth date: ' . $megaman->getBirthDate()->format('d/m/Y'),
                 'Name: ' . $megaman->getName(),
-                'Average health: ' . $megaman->getAverageHealth()
+                'Average health: ' . $megaman->getAverageHealth(),
+                'Inventory: ' . $stringified_inventory($megaman)
             ]);
 
             $this->entityManager->persist($megaman);

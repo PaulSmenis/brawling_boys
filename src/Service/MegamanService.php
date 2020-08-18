@@ -19,7 +19,6 @@ class MegamanService
         $i = new InventoryItems();
         $i->setItemType($item);
         $i->setVolume($items[$item]);
-        $i->setQuantity(1);
 
         return $i;
     }

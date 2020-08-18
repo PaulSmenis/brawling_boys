@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200818101549 extends AbstractMigration
+final class Version20200818150109 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -23,7 +23,7 @@ final class Version20200818101549 extends AbstractMigration
         $this->addSql('CREATE TABLE body (id INT AUTO_INCREMENT NOT NULL, inventory_id INT DEFAULT NULL, UNIQUE INDEX UNIQ_DBA80BB29EEA759 (inventory_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE bodypart (id INT AUTO_INCREMENT NOT NULL, body_id INT NOT NULL, health INT NOT NULL, name VARCHAR(255) NOT NULL, INDEX IDX_85FE248B9B621D84 (body_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE inventory (id INT AUTO_INCREMENT NOT NULL, volume INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE inventory_items (id INT AUTO_INCREMENT NOT NULL, inventory_id INT DEFAULT NULL, item_type VARCHAR(255) NOT NULL, quantity INT NOT NULL, volume INT NOT NULL, INDEX IDX_3D82424D9EEA759 (inventory_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE inventory_items (id INT AUTO_INCREMENT NOT NULL, inventory_id INT DEFAULT NULL, item_type VARCHAR(255) NOT NULL, volume INT NOT NULL, INDEX IDX_3D82424D9EEA759 (inventory_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE megaman (id INT AUTO_INCREMENT NOT NULL, body_id INT NOT NULL, birth_date DATE NOT NULL, name VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_115F19439B621D84 (body_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE body ADD CONSTRAINT FK_DBA80BB29EEA759 FOREIGN KEY (inventory_id) REFERENCES inventory (id)');
         $this->addSql('ALTER TABLE bodypart ADD CONSTRAINT FK_85FE248B9B621D84 FOREIGN KEY (body_id) REFERENCES body (id)');

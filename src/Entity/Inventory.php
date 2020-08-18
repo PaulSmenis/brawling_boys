@@ -83,20 +83,12 @@ class Inventory
         return $this->items;
     }
 
-    public function getItem(string $item_type): InventoryItems 
-    {
-        return $this->getItems()[$item_type];
-    }
-
     public function addItem(InventoryItems $item): self
     {
         if (!$this->items->contains($item)) {
             $this->items[] = $item;
             $item->setInventory($this);
-        } else {
-            $this->getItem($item->getItemType())->setQuantity($item->getQuantity() + 1);
         }
-
         return $this;
     }
 
