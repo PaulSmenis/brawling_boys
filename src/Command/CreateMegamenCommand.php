@@ -40,12 +40,12 @@ class CreateMegamenCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $megamen = $this->createMegamen
-        ->create($input->getArgument('amount'));
+        ->createRandomMegamen($input->getArgument('amount'));
 
-        foreach ($megamen as $i => $megaman) {
+        foreach ($megamen as $index => $megaman) {
 
             $output->writeln([
-                'New megaman ('. ($i + 1) .') has been created:',
+                'New megaman ('. ($index + 1) .') has been created:',
                 'Birth date: ' . $megaman->getBirthDate()->format('d/m/Y'),
                 'Name: ' . $megaman->getName(),
                 'Average health: ' . $megaman->getAverageHealth()

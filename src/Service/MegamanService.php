@@ -59,10 +59,10 @@ class MegamanService
         foreach (['leg', 'hand', 'arm', 'foot', 'knee',
                   'elbow', 'hand', 'ear', 'eye'] as $part) {
                 $b->addBodypart($this->getRandomBodypart('left '. $part));
-                $b->addBodypart($random_bodypart('right '. $part));
+                $b->addBodypart($this->getRandomBodypart('right '. $part));
         } // Чисто сэкономить пару проверочных условий
         foreach(['head', 'torso', 'neck', 'pee-pee'] as $part) {
-            $b->addBodypart($random_bodypart($part));
+            $b->addBodypart($this->getRandomBodypart($part));
         }
         return $b;
     }
@@ -82,7 +82,7 @@ class MegamanService
 
             $megaman->setBirthDate($birth_date); 
             $megaman->setName($name);
-            $megaman->setBody($random_body());
+            $megaman->setBody($this->getRandomBody());
             $megamen[] = $megaman;
         }
         return $megamen;
