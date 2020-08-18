@@ -33,6 +33,41 @@ class Megaman
      */
     private $body;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $STR;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $INTELLECT;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $PER;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $CHA;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $AGI;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $LUC;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $END;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -82,5 +117,89 @@ class Megaman
             $n++;
         }
         return (int) ($sum / $n);
+    }
+
+    public function getSTR(): ?int
+    {
+        return $this->STR;
+    }
+
+    public function setSTR(int $STR): self
+    {
+        $this->STR = $STR;
+
+        return $this;
+    }
+
+    public function getINTELLECT(): ?int
+    {
+        return $this->INTELLECT;
+    }
+
+    public function setINTELLECT(int $INTELLECT): self
+    {
+        $this->INTELLECT = $INTELLECT;
+
+        return $this;
+    }
+
+    public function getPER(): ?int
+    {
+        return $this->PER;
+    }
+
+    public function setPER(int $PER): self
+    {
+        $this->PER = $PER;
+
+        return $this;
+    }
+
+    public function getCHA(): ?int
+    {
+        return $this->CHA;
+    }
+
+    public function setCHA(int $CHA): self
+    {
+        $this->CHA = $CHA;
+
+        return $this;
+    }
+
+    public function getAGI(): ?int
+    {
+        return $this->AGI;
+    }
+
+    public function setAGI(int $AGI): self
+    {
+        $this->AGI = $AGI;
+
+        return $this;
+    }
+
+    public function getLUC(): ?int
+    {
+        return $this->LUC;
+    }
+
+    public function setLUC(int $LUC): self
+    {
+        $this->LUC = $LUC;
+
+        return $this;
+    }
+
+    public function getEND(): ?int
+    {
+        return $this->END;
+    }
+
+    public function setEND(int $END): self
+    {
+        $this->END = $END;
+
+        return $this;
     }
 }

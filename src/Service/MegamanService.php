@@ -12,7 +12,7 @@ class MegamanService
 {
     private function getRandomItem(): InventoryItems 
     {
-        $items = ['medkit' => 10, 'knife' => 10, 'pistol' => 15, 'bullet' => 1, 'bandage' => 5];
+        $items = ['medkit' => 10, 'knife' => 10, 'pistol' => 15, 'bullet' => 1, 'bandage' => 5, 'AK' => 25];
 
         $item = array_rand($items);
 
@@ -82,6 +82,15 @@ class MegamanService
             $megaman->setBirthDate($birth_date); 
             $megaman->setName($name);
             $megaman->setBody($this->getRandomBody());
+
+            $megaman->setSTR(rand(1, 10));
+            $megaman->setPER(rand(1, 10));
+            $megaman->setEND(rand(1, 10));
+            $megaman->setCHA(rand(1, 10));
+            $megaman->setINTELLECT(rand(1, 10));
+            $megaman->setAGI(rand(1, 10));
+            $megaman->setLUC(rand(1, 10));
+
             $megamen[] = $megaman;
         }
         return $megamen;

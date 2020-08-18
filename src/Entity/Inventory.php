@@ -35,6 +35,11 @@ class Inventory
      */
     private $items;
 
+    /**
+     * @ORM\OneToOne(targetEntity=InventoryItems::class, cascade={"persist", "remove"})
+     */
+    private $wielded;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -114,5 +119,17 @@ class Inventory
         }
 
         return $this->getVolume() - $free_volume;
+    }
+
+    public function getWielded(): ?InventoryItems
+    {
+        return $this->wielded;
+    }
+
+    public function setWielded(?InventoryItems $wielded): self
+    {
+        $this->wielded = $wielded;
+
+        return $this;
     }
 }
