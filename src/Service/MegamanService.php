@@ -10,7 +10,8 @@ use App\Entity\InventoryItems;
 
 class MegamanService
 {
-    private function getRandomItem(): InventoryItems {
+    private function getRandomItem(): InventoryItems 
+    {
         $items = ['medkit' => 10, 'knife' => 10, 'pistol' => 15, 'bullet' => 1, 'bandage' => 5];
 
         $item = array_rand($items);
@@ -23,7 +24,8 @@ class MegamanService
         return $i;
     }
 
-    private function getRandomInventory(): Inventory {
+    private function getRandomInventory(): Inventory 
+    {
         $i = new Inventory();
         $vol = rand(30, 100);
         $i->setVolume($vol);
@@ -41,14 +43,16 @@ class MegamanService
         return $i;
     }
 
-    private function getRandomBodypart(string $name = 'foo'): Bodypart {
+    private function getRandomBodypart(string $name = 'foo'): Bodypart 
+    {
         $b = new Bodypart();
         $b->setHealth(rand(5, 10) * 10);
         $b->setName($name);
         return $b;
     }
 
-    private function getRandomBody(): Body {
+    private function getRandomBody(): Body 
+    {
         $b = new Body();
         $b->setInventory($this->getRandomInventory());
 
@@ -63,25 +67,24 @@ class MegamanService
         return $b;
     }
 
-	public function createRandomMegamen($quantity): Array {
-
+    public function createRandomMegamen($quantity): Array 
+    {
         $faker = \Faker\Factory::create();
         $faker->seed(rand(0, 1000));
 
         $megamen = [];
-	
-		for ($i = 0; $i < $quantity; $i++) {
+    
+        for ($i = 0; $i < $quantity; $i++) {
 
-		    $megaman = new Megaman();
-		    $birth_date = $faker->dateTimeInInterval('-50 years');
-		    $name = $faker->name;
+            $megaman = new Megaman();
+            $birth_date = $faker->dateTimeInInterval('-50 years');
+            $name = $faker->name;
 
-		    $megaman->setBirthDate($birth_date); 
-		    $megaman->setName($name);
-		    $megaman->setBody($random_body());
-		    $megamen[] = $megaman;
-		}
-	
-		return $megamen;
-	}
+            $megaman->setBirthDate($birth_date); 
+            $megaman->setName($name);
+            $megaman->setBody($random_body());
+            $megamen[] = $megaman;
+        }
+        return $megamen;
+    }
 }
