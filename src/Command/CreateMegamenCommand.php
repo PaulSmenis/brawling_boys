@@ -3,7 +3,7 @@
 namespace App\Command;
 
 
-use App\Service\CreateMegamen;
+use App\Service\MegamanService;
 
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -21,7 +21,7 @@ class CreateMegamenCommand extends Command
     private $entityManager;
     private $createMegamen;
 
-    public function __construct(EntityManagerInterface $entityManager, CreateMegamen $createMegamen)
+    public function __construct(EntityManagerInterface $entityManager, MegamanService $createMegamen)
     {
         $this->entityManager = $entityManager;
         $this->createMegamen = $createMegamen;
@@ -43,16 +43,14 @@ class CreateMegamenCommand extends Command
         ->create($input->getArgument('amount'));
 
         foreach ($megamen as $i => $megaman) {
-            $output->writeln(
-                ["\n".
-                'New megaman ('. ($i + 1) .') has been created:'
-                ."\n".
-                 'Birth date: ' . $megaman->getBirthDate()->format('d/m/Y')
-                ."\n".
-                'Name: ' . $megaman->getName()
-                ."\n".
-                'Average health: ' . $megaman->getAverageHealth()]
-            );
+
+            $output->writeln([
+                'New megaman ('. ($i + 1) .') has been created:',
+                'Birth date: ' . $megaman->getBirthDate()->format('d/m/Y'),
+                'Name: ' . $megaman->getName(),
+                'Average health: ' . $megaman->getAverageHealth()
+            ]);
+
             $this->entityManager->persist($megaman);
         }
         
