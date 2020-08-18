@@ -97,6 +97,19 @@ class Inventory
         return $this;
     }
 
+    public function getItemsQuantity(string $item_type_name): int 
+    {
+        $items = $this->getItems();
+        $count = 0;
+
+        foreach ($items as $item) {
+            if ($item->getItemType() === $item_type_name)
+                $count += 1;
+        }
+
+        return $count;
+    }
+
     public function removeItem(InventoryItems $item): self
     {
         if ($this->items->contains($item)) {

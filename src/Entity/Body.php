@@ -52,6 +52,15 @@ class Body
         return $this->bodyparts;
     }
 
+    public function getBodypart(string $bodypart_name): ?Bodypart 
+    {
+        foreach ($this->bodyparts as $part) {
+            if ($part->getName() === $bodypart_name)
+                return $part;
+        }
+        return NULL;
+    }
+
     public function addBodypart(bodypart $bodypart): self
     {
         if (!$this->bodyparts->contains($bodypart)) {

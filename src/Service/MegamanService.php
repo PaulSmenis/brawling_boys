@@ -39,6 +39,9 @@ class MegamanService
             $capacity += $item->getVolume();
             $item = $this->getRandomItem();
         }
+
+        $i->setWielded(rand(1, 5) > 3 ? NULL : $this->getRandomItem());
+
         return $i;
     }
 
@@ -47,6 +50,7 @@ class MegamanService
         $b = new Bodypart();
         $b->setHealth(rand(5, 10) * 10);
         $b->setName($name);
+
         return $b;
     }
 
@@ -55,14 +59,10 @@ class MegamanService
         $b = new Body();
         $b->setInventory($this->getRandomInventory());
 
-        foreach (['leg', 'hand', 'arm', 'foot', 'knee',
-                  'elbow', 'hand', 'ear', 'eye'] as $part) {
-                $b->addBodypart($this->getRandomBodypart('left '. $part));
-                $b->addBodypart($this->getRandomBodypart('right '. $part));
-        } // Чисто сэкономить пару проверочных условий
-        foreach(['head', 'torso', 'neck', 'pee-pee'] as $part) {
+        foreach($this->generateBodypartList() as $part) { 
             $b->addBodypart($this->getRandomBodypart($part));
         }
+
         return $b;
     }
 
@@ -93,6 +93,23 @@ class MegamanService
 
             $megamen[] = $megaman;
         }
+
         return $megamen;
+    }
+
+    public function generateBodypartList(): Array 
+    {
+        $list = [];
+
+        foreach (['leg', 'hand', 'arm', 'foot', 'knee',
+                  'elbow', 'hand', 'ear', 'eye'] as $part) {
+            $list[] = 'left ' . $part;
+            $list[] = 'right ' . $part;
+        } // Чисто сэкономить пару проверочных условий
+        foreach(['head', 'torso', 'neck', 'pee-pee'] as $part) {
+            $list[] = $part;
+        }
+
+        return $list;
     }
 }
