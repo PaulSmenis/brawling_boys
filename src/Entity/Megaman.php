@@ -18,11 +18,6 @@ class Megaman
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $health;
-
-    /**
      * @ORM\Column(type="date")
      */
     private $birth_date;
@@ -32,21 +27,15 @@ class Megaman
      */
     private $name;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Body::class, inversedBy="megaman", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $body;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getHealth(): ?int
-    {
-        return $this->health;
-    }
-
-    public function setHealth(int $health): self
-    {
-        $this->health = $health;
-
-        return $this;
     }
 
     public function getBirthDate(): ?\DateTimeInterface
@@ -73,9 +62,15 @@ class Megaman
         return $this;
     }
 
-    public function __construct(int $health, \DateTimeInterface $birth_date, string $name) {
-        $this->health = $health;
-        $this->birth_date = $birth_date;
-        $this->name = $name;
+    public function getBody(): ?body
+    {
+        return $this->body;
+    }
+
+    public function setBody(body $body): self
+    {
+        $this->body = $body;
+
+        return $this;
     }
 }

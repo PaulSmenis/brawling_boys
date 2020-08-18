@@ -22,6 +22,9 @@
 	tr > :last-child {
 		width: 6rem;
 	}
+	#inventory > label :hover {
+
+	}
 </style>
 {% endblock %}
 
@@ -29,16 +32,16 @@
 	<table>
 		<tr>
 			<th>id</th>
-			<td>health</td>
 			<td>birth_date</td>
 			<td>name</td>
 		</tr>
 		{% for megaman in megamen %}
 		<tr>
 			<th>{{ megaman.id }}</th>
-			<td>{{ megaman.health }}</td>
 			<td>{{ megaman.birthDate.format('d/m/Y') }}</td>
 			<td>{{ megaman.name }}</td>
+			<td id='inventory'><label>Inventory</label></td>
+			<td id='body'>Body</td>
 		</tr>
 		{% endfor %}
 	</table>
