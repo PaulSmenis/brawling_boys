@@ -25,7 +25,7 @@ class MegamanController extends AbstractController
 	}
 
 	/**
-	 * @Route("/details/{id}", name="see_megamen", methods={"GET"})
+	 * @Route("/details/{id}", name="detalis_megamen", methods={"GET"})
 	 */
 	public function details(int $id): Response 
 	{
@@ -43,24 +43,24 @@ class MegamanController extends AbstractController
 	{
 		$parts = $this->megaman_service->generateBodypartList();
 		$random_part = fn() => $parts[array_rand($parts)];
-		$create = fn() => $this->megaman_service->createRandomMegamen(1)[0];
+
+		list($megaman_1, $megaman_2) = $this->megaman_service->createRandomMegamen(2);
+
 		$log = [];
 
-		$megaman_1 = $create();
-		$megaman_2 = $create();
-
-		$battle = $this->battle_service;
-		$battle->setFoe1($megaman_1);
-		$battle->setFoe2($megaman_2);
+		$this->battle_service->setFoe1($megaman_1);
+		$this->battle_service->setFoe2($megaman_2);
 
 		$turn = 0;
 
-		while ($battle->isAlive($megaman_1) && $battle->isAlive($megaman_2)) {
-			$log[] = $battle->attack($turn, $random_part());
+		while ($this->battle_service->isAlive($megaman_1) &&
+		       $this->battle_service->isAlive($megaman_2)) {
+
+			$log[] = $this->battle_service->attack($turn, $random_part());
 			$turn = ($turn) ? 0 : 1;
 		}	// Можно ещё станы добавить, типа два и более подряд, но я не успел
 		
-		$log[] = ($battle->isAlive($megaman_1) ? $megaman_2->getName() : $megaman_1->getName()) . ' is dead!';
+		$log[] = ($this->battle_service->isAlive($megaman_1) ? $megaman_2->getName() : $megaman_1->getName()) . ' is dead!';
 		return $this->render('/megaman/megamanBattleDemoLog.html.twig', ['log' => $log]);
 	}
 }

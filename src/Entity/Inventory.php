@@ -125,13 +125,13 @@ class Inventory
 
     public function getFreeVolume(): int
     {
-        $free_volume = 0;
+        $used_volume = 0;
 
         foreach ($this->items as $item) {
-            $free_volume += $item->getVolume();
+            $used_volume += $item->getVolume();
         }
 
-        return $this->getVolume() - $free_volume;
+        return $this->getVolume() - $used_volume;
     }
 
     public function getWielded(): ?InventoryItems

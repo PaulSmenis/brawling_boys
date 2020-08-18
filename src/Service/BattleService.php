@@ -157,6 +157,10 @@ class BattleService
                                          ->getBodypart($part)
                                          ->getHealth() > 0) ? 1 : 0;
 
-        return !!array_filter(array_map($part_health, ['torso', 'neck', 'head']));
+        foreach($man->getBody()->getBodyparts() as $part) {
+            if (!($part->getHealth() > 0) && in_array($part->getName(), ['torso', 'neck', 'head']))
+                return 0;
+        }
+        return 1;
     }
 }
