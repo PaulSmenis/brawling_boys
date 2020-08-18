@@ -71,7 +71,6 @@ class Inventory
         if ($body->getInventory() !== $newInventory) {
             $body->setInventory($newInventory);
         }
-
         return $this;
     }
 
@@ -89,6 +88,7 @@ class Inventory
             $this->items[] = $item;
             $item->setInventory($this);
         }
+
         return $this;
     }
 
@@ -103,5 +103,16 @@ class Inventory
         }
 
         return $this;
+    }
+
+    public function getFreeVolume(): int
+    {
+        $free_volume = 0;
+
+        foreach ($this->items as $item) {
+            $free_volume += $item->getVolume();
+        }
+
+        return $this->getVolume() - $free_volume;
     }
 }

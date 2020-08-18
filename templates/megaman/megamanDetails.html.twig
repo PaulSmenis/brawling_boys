@@ -77,5 +77,8 @@
 			<td>{{ item.getVolume() }}</td>
 		</tr>
 		{% endfor %}
+		<tr>
+			<td colspan="3">Free volume: {{ megaman.body.inventory.getFreeVolume() }}
+		</tr>
 	</table>
 {% endblock %}
