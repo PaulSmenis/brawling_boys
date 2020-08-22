@@ -58,7 +58,7 @@ class Body
             if ($part->getName() === $bodypart_name)
                 return $part;
         }
-        return NULL;
+        return null;
     }
 
     public function addBodypart(bodypart $bodypart): self

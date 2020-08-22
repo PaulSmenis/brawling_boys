@@ -123,13 +123,17 @@ class Inventory
 
     public function getFreeVolume(): int
     {
-        $used_volume = 0;
+        return $this->volume - $this->getUsedVolume();
+    }
 
-        foreach ($this->items as $item) {
-            $used_volume += $item->getVolume();
-        }
-
-        return $this->getVolume() - $used_volume;
+    public function getUsedVolume(): int 
+    {   // Сила земли
+        return array_sum(
+            $this->items->map(
+                fn($x) => $x->getVolume()
+            )
+            ->toArray()
+        );
     }
 
     public function getWielded(): ?InventoryItems
