@@ -150,11 +150,15 @@ class BattleService
 
     private function isAlive(Megaman $man): bool 
     {
-        foreach($man->getBody()->getBodyparts() as $part) {
-            if (!($part->getHealth() > 0) && in_array($part->getName(), ['torso', 'neck', 'head']))
-                return 0;
-        }
+        $vitals = new ArrayCollection(
+            array_map(
+                fn($x) => $man->getBody()->getBodypart($x), 
+                ['torso', 'neck', 'head']
+            )
+        );
 
-        return 1;
+        return $vitals->forAll(function($key, $value) {
+            return $value->getHealth() > 0;
+        });
     }
 }
