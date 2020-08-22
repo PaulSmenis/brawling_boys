@@ -100,14 +100,12 @@ class Inventory
     public function getItemsQuantity(string $item_type_name): int 
     {
         $items = $this->getItems();
-        $count = 0;
 
-        foreach ($items as $item) {
-            if ($item->getItemType() === $item_type_name)
-                $count += 1;
-        }
-
-        return $count;
+        return count(
+            $items->filter(
+                fn($value) => $value->getItemType() === $item_type_name
+            )
+        );
     }
 
     public function removeItem(InventoryItems $item): self
