@@ -7,6 +7,7 @@ use App\Entity\Body;
 use App\Entity\Bodypart;
 use App\Entity\Inventory;
 use App\Entity\InventoryItems;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class MegamanService
 {
@@ -45,11 +46,13 @@ class MegamanService
         return $i;
     }
 
-    private function getRandomBodypart(string $name = 'foo'): Bodypart 
+    private function getRandomBodypart(): Bodypart 
     {
         $b = new Bodypart();
+        $parts = $b::BODYPARTS_LIST;
+
         $b->setHealth(rand(5, 10) * 10);
-        $b->setName($name);
+        $b->setName($parts[array_rand($parts)]);
 
         return $b;
     }
@@ -59,14 +62,14 @@ class MegamanService
         $b = new Body();
         $b->setInventory($this->getRandomInventory());
 
-        foreach($this->generateBodypartList() as $part) { 
-            $b->addBodypart($this->getRandomBodypart($part));
+        foreach(self::BODYPARTS_LIST as $part) { 
+            $b->addBodypart($this->getRandomBodypart());
         }
 
         return $b;
     }
 
-    public function createRandomMegamen($quantity): Array 
+    public function createRandomMegamen($quantity): ArrayCollection
     {
         $faker = \Faker\Factory::create();
         $faker->seed(rand(0, 1000));
@@ -94,22 +97,6 @@ class MegamanService
             $megamen[] = $megaman;
         }
 
-        return $megamen;
-    }
-
-    public function generateBodypartList(): Array 
-    {
-        $list = [];
-
-        foreach (['leg', 'hand', 'arm', 'foot', 'knee',
-                  'elbow', 'hand', 'ear', 'eye'] as $part) {
-            $list[] = 'left ' . $part;
-            $list[] = 'right ' . $part;
-        } // Чисто сэкономить пару проверочных условий
-        foreach(['head', 'torso', 'neck', 'pee-pee'] as $part) {
-            $list[] = $part;
-        }
-
-        return $list;
+        return new ArrayCollection($megamen);
     }
 }

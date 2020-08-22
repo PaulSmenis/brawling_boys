@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use App\Entity\Megaman;
+use App\Service\MegamanService;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class BattleService
 {
@@ -10,16 +12,35 @@ class BattleService
     private $foe_2;
 
     /**
-     * Провести Б И Т В У. Сейчас это в контроллере
+     * Провести Б И Т В У
      */
-    public function battle() {
+    public function battle($foe_1, $foe_2): ArrayCollection
+    {
+        $this->foe_1 = $foe_1;
+        $this->foe_2 = $foe_2;
 
+        $parts = $foe_1->getBody()->getBodypart('head')::BODYPARTS_LIST;
+
+        $log = [];
+
+        $turn = 0;
+
+        while ($this->isAlive($this->foe_1) &&
+               $this->isAlive($this->foe_2)) {
+
+            $log[] = $this->attack($turn, $parts[array_rand($parts)]);
+            $turn = ($turn) ? 0 : 1;
+        }   // Можно ещё станы добавить, типа два и более подряд, но я не успел
+        
+        $log[] = ($this->isAlive($this->foe_1) ? $this->foe_2->getName() : $this->foe_1->getName()) . ' is dead!';
+
+        return new ArrayCollection($log);
     }
 
     /**
      * Нанести урон и отдать сообщение. $direction -- Кто кому угрожает; TRUE -- foe_1 наносит урон foe_2, FALSE -- наоборот
      */
-    public function attack(bool $direction, string $bodypart_name): string 
+    private function attack(bool $direction, string $bodypart_name): string 
     {
         if ($direction) {
             $attacker = $this->foe_1;
@@ -127,40 +148,13 @@ class BattleService
         return ['damage' => $damage, 'type' => $damage_kinds[$damage_kind], 'chance' => $chance];
     }
 
-    public function setFoe1(Megaman $foe_1): self 
+    private function isAlive(Megaman $man): bool 
     {
-        $this->foe_1 = $foe_1;
-
-        return $this;
-    }
-
-    public function getFoe1(Megaman $foe_1): self 
-    {
-        return $this->foe_1;
-    }
-
-    public function setFoe2(Megaman $foe_2): self 
-    {
-        $this->foe_2 = $foe_2;
-
-        return $this;
-    } 
-
-    public function getFoe2(Megaman $foe_2): self 
-    {
-        return $this->foe_2;
-    }
-
-    public function isAlive(Megaman $man): bool 
-    {
-        $part_health = fn($part) => ($man->getBody()
-                                         ->getBodypart($part)
-                                         ->getHealth() > 0) ? 1 : 0;
-
         foreach($man->getBody()->getBodyparts() as $part) {
             if (!($part->getHealth() > 0) && in_array($part->getName(), ['torso', 'neck', 'head']))
                 return 0;
         }
+
         return 1;
     }
 }
