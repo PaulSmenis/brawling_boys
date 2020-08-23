@@ -8,6 +8,7 @@ use App\Entity\Bodypart;
 use App\Entity\Inventory;
 use App\Entity\InventoryItems;
 use Doctrine\Common\Collections\ArrayCollection;
+use Faker\Factory;
 
 class MegamanService
 {
@@ -34,8 +35,6 @@ class MegamanService
              $x < rand(0, 10) && $capacity + $item->getVolume() <= $vol;
              $x++) {
 
-            $type = $item->getItemType();
-
             $i->addItem($item);
             $capacity += $item->getVolume();
             $item = $this->getRandomItem();
@@ -46,24 +45,13 @@ class MegamanService
         return $i;
     }
 
-    private function getRandomBodypart(): Bodypart 
-    {
-        $b = new Bodypart();
-        $parts = $b::BODYPARTS_LIST;
-
-        $b->setHealth(rand(5, 10) * 10);
-        $b->setName($parts[array_rand($parts)]);
-
-        return $b;
-    }
-
     private function getRandomBody(): Body 
     {
         $b = new Body();
         $b->setInventory($this->getRandomInventory());
 
         foreach((new Bodypart)::BODYPARTS_LIST as $part) { 
-            $b->addBodypart($this->getRandomBodypart());
+            $b->addBodypart($part);
         }
 
         return $b;
@@ -71,7 +59,7 @@ class MegamanService
 
     public function createRandomMegamen($quantity): ArrayCollection
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
         $faker->seed(rand(0, 1000));
 
         $megamen = [];

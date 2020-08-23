@@ -3,71 +3,60 @@
 namespace App\Service;
 
 use App\Entity\Megaman;
-use App\Service\MegamanService;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class BattleService
 {
-    private $foe_1;
-    private $foe_2;
+    public Megaman $first_fighter;
+    public Megaman $second_fighter;
 
-    /**
-     * Провести Б И Т В У
-     */
-    public function battle($foe_1, $foe_2): ArrayCollection
+    public function battle(): ArrayCollection
     {
-        $this->foe_1 = $foe_1;
-        $this->foe_2 = $foe_2;
-
-        $parts = $foe_1->getBody()->getBodypart('head')::BODYPARTS_LIST;
+        $foe_1 = $this->first_fighter;
+        $foe_2 = $this->second_fighter;
 
         $log = [];
 
         $turn = 0;
 
-        while ($this->isAlive($this->foe_1) &&
-               $this->isAlive($this->foe_2)) {
+        while ($this->isAlive($foe_1) &&
+               $this->isAlive($foe_2)) {
 
-            $log[] = $this->attack($turn, $parts[array_rand($parts)]);
+            $log[] = $this->attack($foe_1, $foe_2, $turn);
             $turn = ($turn) ? 0 : 1;
         }   // Можно ещё станы добавить, типа два и более подряд, но я не успел
         
-        $log[] = ($this->isAlive($this->foe_1) ? $this->foe_2->getName() : $this->foe_1->getName()) . ' is dead!';
-
+        $log[] = ($this->isAlive($foe_1) ? $foe_2->getName() : $foe_1->getName()) . ' is dead!';
         return new ArrayCollection($log);
     }
 
     /**
      * Нанести урон и отдать сообщение. $direction -- Кто кому угрожает; TRUE -- foe_1 наносит урон foe_2, FALSE -- наоборот
+     * @param Megaman $foe_1
+     * @param Megaman $foe_2
+     * @param string $bodypart_name
+     * @return string
      */
-    private function attack(bool $direction, string $bodypart_name): string 
+    private function attack(Megaman $foe_1, Megaman $foe_2, string $bodypart_name): string
     {
-        if ($direction) {
-            $attacker = $this->foe_1;
-            $attacked = $this->foe_2;
-        } else {
-            $attacker = $this->foe_2;
-            $attacked = $this->foe_1;
-        }
+        //$message = '';
 
-        $message = '';
-
-        $damage = $this->countDamage($attacker);
-        $part = $attacked->getBody()->getBodypart($bodypart_name);
+        $damage = $this->countDamage($foe_1);
+        $part = $foe_2->getBody()->getBodypart($bodypart_name);
 
         if (!$part)
-            return 'You tried to hit ' . $attacked->getName() . '"s ' . $bodypart_name . ' but he hasn"t any!';
+            return 'You tried to hit ' . $foe_2->getName() . '"s ' . $bodypart_name . ' but he hasn"t any!';
         $part_health = $part->getHealth();
 
-        $weapon = $attacker->getBody()->getInventory()->getWielded();
+        $weapon = $foe_1->getBody()->getInventory()->getWielded();
         $weapon_name = ($weapon === NULL) ? 'bare hands' : $weapon->getItemType();  
 
         if (rand(1, 100) <= $damage['chance'] * 100) {
 
             $part->setHealth($part_health - $damage['damage']);
 
-            $message = $attacker->getName() . ' ' . $damage['type'] . ' ' . 
-                       $attacked->getName() . '"s '. $bodypart_name .' with ' . 
+            $message = $foe_1->getName() . ' ' . $damage['type'] . ' ' . 
+                       $foe_2->getName() . '"s '. $bodypart_name .' with ' . 
                        $weapon_name . ' ('. $damage['damage'] .' dmg). ';
 
             if ($part->getHealth() <= 0) {
@@ -76,7 +65,7 @@ class BattleService
                // unset($part);
             }
         } else {
-            $message = $attacker->getName() . ' missed!';
+            $message = $foe_1->getName() . ' missed!';
         }
 
         return $message;
@@ -85,14 +74,11 @@ class BattleService
     /**
      * Потенциальный урон чела в зависимости от статов и того, что в руках. Возвращает [урон, тип, шанс]
      */
-    private function countDamage(Megaman $man): Array
+    private function countDamage(Megaman $man): array
     {
         $inventory = $man->getBody()->getInventory();
         $bullets = $inventory->getItemsQuantity('bullet');
         $weapon = $inventory->getWielded();
-
-        $damage;
-        $damage_kind;
 
         $damage_kinds = ['bruised', 'shot', 'smashed', 'tried to hit', 'stabbed', 'cut', 'smacked', 'scarred'];
 
@@ -152,12 +138,12 @@ class BattleService
     {
         $vitals = new ArrayCollection(
             array_map(
-                fn($x) => $man->getBody()->getBodypart($x), 
+                fn($x) => $man->getBody()->getBodypart($x),
                 ['torso', 'neck', 'head']
             )
         );
-
-        return $vitals->forAll(function($key, $value) {
+        return $vitals->forAll(function($value) {
+            var_dump($value);
             return $value->getHealth() > 0;
         });
     }

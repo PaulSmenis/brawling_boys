@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Medkit;
 use App\Repository\InventoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,27 +17,27 @@ class Inventory
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $volume;
+    private int $volume;
 
     /**
      * @ORM\OneToOne(targetEntity=Body::class, mappedBy="inventory", cascade={"persist", "remove"})
      */
-    private $body;
+    private ?Body $body;
 
     /**
      * @ORM\OneToMany(targetEntity=InventoryItems::class, mappedBy="inventory", cascade={"persist"})
      */
-    private $items;
+    private ArrayCollection $items;
 
     /**
      * @ORM\OneToOne(targetEntity=InventoryItems::class, cascade={"persist", "remove"})
      */
-    private $wielded;
+    private ?InventoryItems $wielded;
 
     public function __construct()
     {

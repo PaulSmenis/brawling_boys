@@ -15,22 +15,22 @@ class InventoryItems
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $item_type;
+    private string $item_type;
 
     /**
      * @ORM\ManyToOne(targetEntity=Inventory::class, inversedBy="items")
      */
-    private $inventory;
+    private ?Inventory $inventory;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $volume;
+    private int $volume;
 
     public function getId(): ?int
     {

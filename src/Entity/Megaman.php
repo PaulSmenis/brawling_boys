@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\MegamanRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=MegamanRepository::class)
@@ -14,71 +16,73 @@ class Megaman
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("megamen_list")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $birth_date;
+    private DateTimeInterface $birth_date;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("megamen_list")
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\OneToOne(targetEntity=Body::class, inversedBy="megaman", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $body;
+    private Body $body;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $STR;
+    private int $STR;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $INTELLECT;
+    private int $INTELLECT;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $PER;
+    private int $PER;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $CHA;
+    private int $CHA;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $AGI;
+    private int $AGI;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $LUC;
+    private int $LUC;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $END;
+    private int $END;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBirthDate(): ?\DateTimeInterface
+    public function getBirthDate(): ?DateTimeInterface
     {
         return $this->birth_date;
     }
 
-    public function setBirthDate(\DateTimeInterface $birth_date): self
+    public function setBirthDate(DateTimeInterface $birth_date): self
     {
         $this->birth_date = $birth_date;
 
