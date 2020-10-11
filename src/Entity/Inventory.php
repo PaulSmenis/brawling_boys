@@ -32,7 +32,7 @@ class Inventory
     /**
      * @ORM\OneToMany(targetEntity=InventoryItems::class, mappedBy="inventory", cascade={"persist"})
      */
-    private ArrayCollection $items;
+    private Collection $items;
 
     /**
      * @ORM\OneToOne(targetEntity=InventoryItems::class, cascade={"persist", "remove"})

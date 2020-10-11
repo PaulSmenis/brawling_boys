@@ -50,7 +50,11 @@ class MegamanService
         $b = new Body();
         $b->setInventory($this->getRandomInventory());
 
-        foreach((new Bodypart)::BODYPARTS_LIST as $part) { 
+        foreach((new Bodypart)::BODYPARTS_LIST as $part_name) { 
+            $part = new Bodypart;
+            $part->setHealth(rand(1, 100));
+            $part->setBody($b);
+            $part->setName($part_name);
             $b->addBodypart($part);
         }
 

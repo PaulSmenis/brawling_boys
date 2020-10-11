@@ -1,0 +1,10 @@
+version: '3'
+services:
+  database:
+      image: mariadb:10.2
+      environment:
+        MYSQL_ROOT_PASSWORD: root123
+        MYSQL_DATABASE: appdata
+        MYSQL_USER: test
+        MYSQL_PASSWORD: root123
+      ports: [3306]

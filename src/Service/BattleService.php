@@ -10,7 +10,7 @@ class BattleService
     public Megaman $first_fighter;
     public Megaman $second_fighter;
 
-    public function battle(): ArrayCollection
+    public function battle(): Collection
     {
         $foe_1 = $this->first_fighter;
         $foe_2 = $this->second_fighter;
