@@ -146,4 +146,10 @@ class Inventory
 
         return $this;
     }
+
+    // Для административной панели
+    public function __toString() 
+    {
+        return $this->getBody()." inventory";
+    }
 }

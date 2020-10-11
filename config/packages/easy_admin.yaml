@@ -1,0 +1,8 @@
+easy_admin:
+    entities:
+        Megaman: 
+            class: App\Entity\Megaman
+        Body: 
+            class: App\Entity\Body
+        Inventory: 
+            class: App\Entity\Inventory

@@ -208,4 +208,10 @@ class Megaman
 
         return $this;
     }
+
+    // Для административной панели
+    public function __toString() 
+    {
+        return $this->getName();
+    }
 }
