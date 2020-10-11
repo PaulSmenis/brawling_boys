@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+<style>
+	table {
+		background-color: #808080;
+		font-family: Calibri, sans-serif;
+		transition: box-shadow linear 0.2s 0s;
+		margin: 0 0 1rem 0;
+	}
+	table:hover {
+		box-shadow: 1px 1px 2px magenta, -1px -1px 2px magenta;
+	}
+	table, th, td {
+		border: 1px solid black;
+	}
+	th, td {
+		background-color: #D3D3D3;
+		text-align: center;
+		width: 3rem;
+		height: 2rem;
+	}
+	#body_table {
+		width: 100%;
+	}
+</style>
+{% endblock %}
+
+{% block body %}
+	<table>
+		<tr>
+			<th>ID</th>
+			<td>Birth date</td>
+			<td>Name</td>
+			<td>Avg. health</td>
+			<td>Inventory volume</td>
+		</tr>
+		<tr>
+			<th>{{ megaman.id }}</th>
+			<td>{{ megaman.birthDate.format('d/m/Y') }}</td>
+			<td>{{ megaman.name }}</td>
+			<td>{{ megaman.getAverageHealth() }}</td>
+			<td>{{ megaman.body.inventory.getVolume() }}</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<th colspan="7">S.P.E.C.I.A.L.</th>
+		</tr>
+		<tr>
+			<td>Strength</td>
+			<td>Perception</td>
+			<td>Endurance</td>
+			<td>Charisma</td>
+			<td>Intellect</td>
+			<td>Agility</td>
+			<td>Luck</td>
+		</tr>
+		<tr>
+			<td>{{ megaman.getSTR() }}</td>
+			<td>{{ megaman.getPER() }}</td>
+			<td>{{ megaman.getEND() }}</td>
+			<td>{{ megaman.getCHA() }}</td>
+			<td>{{ megaman.getINTELLECT() }}</td>
+			<td>{{ megaman.getAGI() }}</td>
+			<td>{{ megaman.getLUC() }}</td>
+		</tr>
+	</table>
+	<table id="body_table">
+		<tr>
+			<th rowspan="2">Body</th>
+			<th>Bodypart</th>
+
+			{% for part in megaman.body.bodyparts %}
+			<td>{{ part.getName() }}</td>
+			{% endfor %}
+
+		</tr>
+		<tr>
+			<th>Health</th>
+
+			{% for part in megaman.body.bodyparts %}
+			<td>{{ part.getHealth() }}</td>
+			{% endfor %}
+
+		</tr>
+
+	</table>
+	<table>
+		<tr>
+			<th colspan="3">Inventory</th>
+		</tr>
+		<tr>
+			<td>Type</td>
+			<td>Item volume</td>
+		</tr>
+		{% for item in megaman.body.inventory.items %}
+		<tr>
+			<td>{{ item.getItemType() }}</td>
+			<td>{{ item.getVolume() }}</td>
+		</tr>
+		{% endfor %}
+		<tr>
+			<td colspan="3">Free volume: {{ megaman.body.inventory.getFreeVolume() }}
+		</tr>
+	</table>
+{% endblock %}

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Medkit;
 use App\Repository\InventoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,22 +17,27 @@ class Inventory
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $volume;
+    private int $volume;
 
     /**
      * @ORM\OneToOne(targetEntity=Body::class, mappedBy="inventory", cascade={"persist", "remove"})
      */
-    private $body;
+    private ?Body $body;
 
     /**
      * @ORM\OneToMany(targetEntity=InventoryItems::class, mappedBy="inventory", cascade={"persist"})
      */
-    private $items;
+    private Collection $items;
+
+    /**
+     * @ORM\OneToOne(targetEntity=InventoryItems::class, cascade={"persist", "remove"})
+     */
+    private ?InventoryItems $wielded;
 
     public function __construct()
     {
@@ -71,7 +75,6 @@ class Inventory
         if ($body->getInventory() !== $newInventory) {
             $body->setInventory($newInventory);
         }
-
         return $this;
     }
 
@@ -83,21 +86,25 @@ class Inventory
         return $this->items;
     }
 
-    public function getItem(string $item_type): InventoryItems 
-    {
-        return $this->getItems()[$item_type];
-    }
-
     public function addItem(InventoryItems $item): self
     {
         if (!$this->items->contains($item)) {
             $this->items[] = $item;
             $item->setInventory($this);
-        } else {
-            $this->getItem($item->getItemType())->setQuantity($item->getQuantity() + 1);
         }
 
         return $this;
+    }
+
+    public function getItemsQuantity(string $item_type_name): int 
+    {
+        $items = $this->getItems();
+
+        return count(
+            $items->filter(
+                fn($value) => $value->getItemType() === $item_type_name
+            )
+        );
     }
 
     public function removeItem(InventoryItems $item): self
@@ -111,5 +118,38 @@ class Inventory
         }
 
         return $this;
+    }
+
+    public function getFreeVolume(): int
+    {
+        return $this->volume - $this->getUsedVolume();
+    }
+
+    public function getUsedVolume(): int 
+    {   // Сила земли
+        return array_sum(
+            $this->items->map(
+                fn($x) => $x->getVolume()
+            )
+            ->toArray()
+        );
+    }
+
+    public function getWielded(): ?InventoryItems
+    {
+        return $this->wielded;
+    }
+
+    public function setWielded(?InventoryItems $wielded): self
+    {
+        $this->wielded = $wielded;
+
+        return $this;
+    }
+
+    // Для административной панели
+    public function __toString() 
+    {
+        return $this->getBody()." inventory";
     }
 }

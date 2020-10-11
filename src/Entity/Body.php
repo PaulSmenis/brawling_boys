@@ -52,6 +52,15 @@ class Body
         return $this->bodyparts;
     }
 
+    public function getBodypart(string $bodypart_name): ?Bodypart 
+    {
+        foreach ($this->bodyparts as $part) {
+            if ($part->getName() === $bodypart_name)
+                return $part;
+        }
+        return null;
+    }
+
     public function addBodypart(bodypart $bodypart): self
     {
         if (!$this->bodyparts->contains($bodypart)) {
@@ -101,5 +110,16 @@ class Body
         }
 
         return $this;
+    }
+
+    // Для административной панели
+    public function __toString()
+    {
+        $name = $this->getMegaman()->getName();
+        if (isset($name)) {
+            return $name."'s body";
+        } else {
+            return 'A body of uncertain ownership';
+        }
     }
 }

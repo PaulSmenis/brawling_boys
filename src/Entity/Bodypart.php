@@ -33,6 +33,12 @@ class Bodypart
      */
     private $name;
 
+    public const BODYPARTS_LIST = [
+        'left leg', 'left hand', 'left arm', 'left foot', 'left knee', 'left elbow', 'left hand', 'left ear', 'left eye', 
+        'right leg', 'right hand', 'right arm', 'right foot', 'right knee', 'right elbow', 'right hand', 'right ear', 'right eye',
+        'head', 'torso', 'neck', 'pee-pee'
+    ];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -72,5 +78,11 @@ class Bodypart
         $this->name = $name;
 
         return $this;
+    }
+    
+    // Для административной панели
+    public function __toString() 
+    {
+        return $this->getName();
     }
 }

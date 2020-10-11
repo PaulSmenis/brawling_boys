@@ -15,27 +15,22 @@ class InventoryItems
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $item_type;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $quantity;
+    private string $item_type;
 
     /**
      * @ORM\ManyToOne(targetEntity=Inventory::class, inversedBy="items")
      */
-    private $inventory;
+    private ?Inventory $inventory;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $volume;
+    private int $volume;
 
     public function getId(): ?int
     {
@@ -50,18 +45,6 @@ class InventoryItems
     public function setItemType(string $item_type): self
     {
         $this->item_type = $item_type;
-
-        return $this;
-    }
-
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): self
-    {
-        $this->quantity = $quantity;
 
         return $this;
     }
@@ -88,5 +71,11 @@ class InventoryItems
         $this->volume = $volume;
 
         return $this;
+    }
+
+    // Для административной панели
+    public function __toString() 
+    {
+        return $this->getItemType();
     }
 }

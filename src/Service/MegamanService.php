@@ -7,19 +7,20 @@ use App\Entity\Body;
 use App\Entity\Bodypart;
 use App\Entity\Inventory;
 use App\Entity\InventoryItems;
+use Doctrine\Common\Collections\ArrayCollection;
+use Faker\Factory;
 
 class MegamanService
 {
     private function getRandomItem(): InventoryItems 
     {
-        $items = ['medkit' => 10, 'knife' => 10, 'pistol' => 15, 'bullet' => 1, 'bandage' => 5];
+        $items = ['medkit' => 10, 'knife' => 10, 'pistol' => 15, 'bullet' => 1, 'bandage' => 5, 'AK' => 25];
 
         $item = array_rand($items);
 
         $i = new InventoryItems();
         $i->setItemType($item);
         $i->setVolume($items[$item]);
-        $i->setQuantity(1);
 
         return $i;
     }
@@ -34,21 +35,14 @@ class MegamanService
              $x < rand(0, 10) && $capacity + $item->getVolume() <= $vol;
              $x++) {
 
-            $type = $item->getItemType();
-
             $i->addItem($item);
             $capacity += $item->getVolume();
             $item = $this->getRandomItem();
         }
-        return $i;
-    }
 
-    private function getRandomBodypart(string $name = 'foo'): Bodypart 
-    {
-        $b = new Bodypart();
-        $b->setHealth(rand(5, 10) * 10);
-        $b->setName($name);
-        return $b;
+        $i->setWielded(rand(1, 5) > 3 ? NULL : $this->getRandomItem());
+
+        return $i;
     }
 
     private function getRandomBody(): Body 
@@ -56,20 +50,20 @@ class MegamanService
         $b = new Body();
         $b->setInventory($this->getRandomInventory());
 
-        foreach (['leg', 'hand', 'arm', 'foot', 'knee',
-                  'elbow', 'hand', 'ear', 'eye'] as $part) {
-                $b->addBodypart($this->getRandomBodypart('left '. $part));
-                $b->addBodypart($this->getRandomBodypart('right '. $part));
-        } // Чисто сэкономить пару проверочных условий
-        foreach(['head', 'torso', 'neck', 'pee-pee'] as $part) {
-            $b->addBodypart($this->getRandomBodypart($part));
+        foreach((new Bodypart)::BODYPARTS_LIST as $part_name) { 
+            $part = new Bodypart;
+            $part->setHealth(rand(1, 100));
+            $part->setBody($b);
+            $part->setName($part_name);
+            $b->addBodypart($part);
         }
+
         return $b;
     }
 
-    public function createRandomMegamen($quantity): Array 
+    public function createRandomMegamen($quantity): ArrayCollection
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
         $faker->seed(rand(0, 1000));
 
         $megamen = [];
@@ -83,8 +77,18 @@ class MegamanService
             $megaman->setBirthDate($birth_date); 
             $megaman->setName($name);
             $megaman->setBody($this->getRandomBody());
+
+            $megaman->setSTR(rand(1, 10));
+            $megaman->setPER(rand(1, 10));
+            $megaman->setEND(rand(1, 10));
+            $megaman->setCHA(rand(1, 10));
+            $megaman->setINTELLECT(rand(1, 10));
+            $megaman->setAGI(rand(1, 10));
+            $megaman->setLUC(rand(1, 10));
+
             $megamen[] = $megaman;
         }
-        return $megamen;
+
+        return new ArrayCollection($megamen);
     }
 }
