@@ -4,6 +4,9 @@
 
 {% block stylesheets %}
 <style>
+	.stats:first-child, .verbose {
+		font-size: 1.4vw;
+	}
 	.stats {
 		width: 100%;
 		display: flex;
@@ -42,8 +45,8 @@
 		{% for megaman in megaman_list %}
 		<div class="stats">
 			<div>{{ megaman.id }}</div>
-			<div>{{ megaman.birth_date|format_datetime('medium', 'short') }}</div>
-			<div><a href="/megaman/details/{{ megaman.id }}">{{ megaman.name }}</a></div>
+			<div class="verbose">{{ megaman.birth_date|format_datetime('medium', 'short') }}</div>
+			<div class="verbose"><a href="{{ path('details', {id: megaman.id}) }}">{{ megaman.name }}</a></div>
 			<div>{{ megaman.STR }}</div>
 			<div>{{ megaman.PER }}</div>
 			<div>{{ megaman.END }}</div>
