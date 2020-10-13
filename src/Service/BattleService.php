@@ -134,7 +134,7 @@ class BattleService
         return ['damage' => $damage, 'type' => $damage_kinds[$damage_kind], 'chance' => $chance];
     }
 
-    private function isAlive(Megaman $man): bool 
+    private function isAlive(Megaman $man): bool
     {
         $vitals = new ArrayCollection(
             array_map(
@@ -142,8 +142,8 @@ class BattleService
                 ['torso', 'neck', 'head']
             )
         );
+        
         return $vitals->forAll(function($value) {
-            var_dump($value);
             return $value->getHealth() > 0;
         });
     }

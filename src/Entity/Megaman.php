@@ -77,12 +77,13 @@ class Megaman
         return $this->id;
     }
 
-    public function getBirthDate(): ?DateTimeInterface
+    // Симфони видит в шаблоне название сеттера, только если он именован "get".имя_свойства
+    public function getbirth_date(): ?DateTimeInterface
     {
         return $this->birth_date;
     }
 
-    public function setBirthDate(DateTimeInterface $birth_date): self
+    public function setbirth_date(DateTimeInterface $birth_date): self
     {
         $this->birth_date = $birth_date;
 
