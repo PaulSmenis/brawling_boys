@@ -52,7 +52,7 @@ class CreateMegamenCommand extends Command
 
             $output->writeln([
                 'New megaman ('. ($index + 1) .') has been created:',
-                'Birth date: ' . $megaman->getBirthDate()->format('d/m/Y'),
+                'Birth date: ' . $megaman->getbirth_date()->format('d/m/Y'),
                 'Name: ' . $megaman->getName(),
                 'Average health: ' . $megaman->getAverageHealth(),
                 'Inventory: ' . $stringified_inventory($megaman)

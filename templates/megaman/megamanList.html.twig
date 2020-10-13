@@ -56,6 +56,9 @@
 			<div>{{ megaman.LUC }}</div>
 		</div>
 		{% endfor %}
+		<div class="navigation">
+			{{ knp_pagination_render(megaman_list) }}
+		</div>
 	{% else %}
 		<div>We are out of megamen, apparently</div>
 	{% endif %}

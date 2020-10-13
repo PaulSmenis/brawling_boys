@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @Route("/megaman")
@@ -22,19 +23,26 @@ class MegamanController extends AbstractController
      */
     public function details(Megaman $megaman): Response 
     {
-        die(var_dump($megaman));
         return $this->render('/megaman/megamanDetails.html.twig', 
                             ['megaman' => $megaman]);
     }
 
     /**
      * @Route("/list", name="list", methods={"GET"})
+     * @param Request $request
      * @param MegamanRepository $megamanRepo
+     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function list(MegamanRepository $megamanRepo): Response 
-    {
+    public function list(Request $request, MegamanRepository $megamanRepo,
+                         PaginatorInterface $paginator): Response
+    {   
+        $page = $paginator->paginate(
+            $megamanRepo->findAll(),
+            $request->query->getInt('page', 1),
+            5
+        );
         return $this->render('megaman/megamanList.html.twig', 
-                            ['megaman_list' => $megamanRepo->findAll()]);
+                            ['megaman_list' => $page]);
     }
 }

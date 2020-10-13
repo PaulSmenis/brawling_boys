@@ -74,7 +74,7 @@ class MegamanService
             $birth_date = $faker->dateTimeInInterval('-50 years');
             $name = $faker->name;
 
-            $megaman->setBirthDate($birth_date); 
+            $megaman->setbirth_Date($birth_date); 
             $megaman->setName($name);
             $megaman->setBody($this->getRandomBody());
 
