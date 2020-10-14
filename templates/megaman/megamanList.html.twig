@@ -32,7 +32,7 @@
 	{% if megaman_list|length > 0 %}
 		<div class="stats">
 			<div>ID</div>
-			<div>Birthdate</div>
+			<div>birthdate</div>
 			<div>Name</div>
 			<div>Strengh</div>
 			<div>Perception</div>
@@ -45,7 +45,7 @@
 		{% for megaman in megaman_list %}
 		<div class="stats">
 			<div>{{ megaman.id }}</div>
-			<div class="verbose">{{ megaman.birth_date|format_datetime('medium', 'short') }}</div>
+			<div class="verbose">{{ megaman.birthdate|format_datetime('medium', 'short') }}</div>
 			<div class="verbose"><a href="{{ path('details', {id: megaman.id}) }}">{{ megaman.name }}</a></div>
 			<div>{{ megaman.STR }}</div>
 			<div>{{ megaman.PER }}</div>
