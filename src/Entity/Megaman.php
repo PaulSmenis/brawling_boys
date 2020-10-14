@@ -23,7 +23,7 @@ class Megaman
     /**
      * @ORM\Column(type="date")
      */
-    private DateTimeInterface $birth_date;
+    private DateTimeInterface $birthdate;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -77,14 +77,14 @@ class Megaman
         return $this->id;
     }
 
-    public function getBirthDate(): ?DateTimeInterface
+    public function getBirthdate(): ?DateTimeInterface
     {
-        return $this->birth_date;
+        return $this->birthdate;
     }
 
-    public function setBirthDate(DateTimeInterface $birth_date): self
+    public function setBirthdate(DateTimeInterface $birthdate): self
     {
-        $this->birth_date = $birth_date;
+        $this->birthdate = $birthdate;
 
         return $this;
     }

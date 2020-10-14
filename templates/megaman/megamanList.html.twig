@@ -1,56 +1,65 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Megaman listing{% endblock %}
+
 {% block stylesheets %}
 <style>
-	table {
-		background-color: #808080;
-		font-family: Calibri, sans-serif;
-		transition: box-shadow linear 0.2s 0s;
-		margin: 0 0 1rem 0;
+	.stats:first-child, .verbose {
+		font-size: 1.4vw;
 	}
-	table:hover {
-		box-shadow: 1px 1px 2px magenta, -1px -1px 2px magenta;
+	.stats {
+		width: 100%;
+		display: flex;
+		flex-flow: row nowrap;
 	}
-	table, th, td {
+	.stats > div {
 		border: 1px solid black;
-	}
-	th, td {
-		background-color: #D3D3D3;
+
+		overflow: hidden;
+		text-overflow: ellipsis;
 		text-align: center;
-		width: 3rem;
-		height: 2rem;
+		height: 3rem;
+		flex-basis: 11%;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>
 {% endblock %}
 
 {% block body %}
-	<div class="count">
-		{{ pagination.getTotalItemCount }}
-	</div>
-	<table>
-		<tr>
-			{# sorting of properties based on query components #}
-			<th>{{ knp_pagination_sortable(pagination, 'Id', 'a.id') }}</th>
-			<th{% if pagination.isSorted('a.name') %} class="sorted"{% endif %}>
-				{{ knp_pagination_sortable(pagination, 'name', 'a.name') }}
-			</th>
-		</tr>
-
-		{# table body #}
-		{% for article in pagination %}
-				<tr {% if loop.index is odd %}class="color"{% endif %}>
-					<td>
-						<a href="/megaman/details/{{ article.id }}">
-						{{ article.id }}
-						</a>
-					</td>
-
-					<td>{{ article.name }}</td>
-				</tr>
+	{% if megaman_list|length > 0 %}
+		<div class="stats">
+			<div>ID</div>
+			<div>birthdate</div>
+			<div>Name</div>
+			<div>Strengh</div>
+			<div>Perception</div>
+			<div>Endurance</div>
+			<div>Charisma</div>
+			<div>Intellect</div>
+			<div>Agility</div>
+			<div>Luck</div>
+		</div>
+		{% for megaman in megaman_list %}
+		<div class="stats">
+			<div>{{ megaman.id }}</div>
+			<div class="verbose">{{ megaman.birthdate|format_datetime('medium', 'short') }}</div>
+			<div class="verbose"><a href="{{ path('details', {id: megaman.id}) }}">{{ megaman.name }}</a></div>
+			<div>{{ megaman.STR }}</div>
+			<div>{{ megaman.PER }}</div>
+			<div>{{ megaman.END }}</div>
+			<div>{{ megaman.CHA }}</div>
+			<div>{{ megaman.INTELLECT }}</div>
+			<div>{{ megaman.AGI }}</div>
+			<div>{{ megaman.LUC }}</div>
+		</div>
 		{% endfor %}
-	</table>
-	{# display navigation #}
-	<div class="navigation">
-		{{ knp_pagination_render(pagination) }}
-	</div>
+		<div class="navigation">
+			{{ knp_pagination_render(megaman_list) }}
+		</div>
+	{% else %}
+		<div>We are out of megamen, apparently</div>
+	{% endif %}
 {% endblock %}
